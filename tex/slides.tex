@@ -73,8 +73,9 @@
   
 \[
   \begin{split}
-    y_t &= \mathcal M_\theta(s_t) + \eta_t\\
-    s_t &= \mathcal S_\theta(s_{t-1}, \varepsilon_t)
+    y_t &= \mathcal M_{\theta, \Sigma} (s_t)+ \eta_t\\
+    s_t &= \mathcal S_{\theta,\Sigma}(s_{t-1}, \varepsilon_t)\\
+    \varepsilon_t &\underset{\mathrm{iid}}{\sim} \mathcal N \left(\mathbf 0, \Sigma\right)
   \end{split}
 \]
 
@@ -106,21 +107,21 @@
 \begin{itemize}
 \item In principle, the likelihood (the joint density of the sample) can be expressed as a product of conditional densities and a marginal density for the first observation:
   \[
-    \mathcal L(\theta; \mathcal Y_T) = p(y_1|s_0, \theta)p(s_0, \theta)\prod_{t=2}^Tp(y_t|\mathcal Y_{t-1}, \theta)
+    \mathcal L(\theta,\Sigma; \mathcal Y_T) = p(y_1|s_0, \theta, \Sigma)p(s_0, \theta, \Sigma)\prod_{t=2}^Tp(y_t|\mathcal Y_{t-1}, \theta, \Sigma)
   \]
   \bigskip
 \item But high dimensional integration problems:
   \[
-    p(y_t|\mathcal Y_{t-1}, \theta) = \int p(y_t|s_t, \theta)p(s_t|\mathcal Y_{t-1})\mathrm ds
+    p(y_t|\mathcal Y_{t-1}, \theta, \Sigma) = \int p(y_t|s_t, \theta, \Sigma)p(s_t|\mathcal Y_{t-1})\mathrm ds
   \]
   \begin{subequations}
     \begin{equation}
       \tag{Prediction}
-      p(s_t|s_t|\mathcal Y_{t-1}) = \int p(s_t|s_{t-1},\theta)p(s_{t-1}|\mathcal Y_{t-1})\mathrm ds
+      p(s_t|\mathcal Y_{t-1}) = \int p(s_t|s_{t-1},\theta,\Sigma)p(s_{t-1}|\mathcal Y_{t-1})\mathrm ds
     \end{equation}
     \begin{equation}
       \tag{Update, Bayes}
-      p(s_{t}|\mathcal Y_{t}) \propto p(y_t|s_t,\theta)p(y_t|\mathcal Y_{t-1})
+      p(s_{t}|\mathcal Y_{t}) \propto p(y_t|s_t,\theta,\Sigma)p(y_t|\mathcal Y_{t-1})
     \end{equation}
   \end{subequations}
 
@@ -188,7 +189,7 @@
   \begin{itemize}
   \item No measurement errors and $\sharp\{y_t\}=\sharp\{\varepsilon_t\}$
     \[
-      y_t = \mathcal F_\theta \left(s_{t-1}, \varepsilon_t\right) \triangleq \mathcal M_{\theta}\left(\mathcal S_\theta(s_{t-1}, \varepsilon_t)\right)
+      y_t = \mathcal F_{\theta,\Sigma} \left(s_{t-1}, \varepsilon_t\right) \triangleq \mathcal M_{\theta,\Sigma}\left(\mathcal S_{\theta,\Sigma}(s_{t-1}, \varepsilon_t)\right)
     \]
     
     \bigskip
@@ -224,7 +225,7 @@
 
   \item Posterior is:
     \[
-      p(\theta|\mathcal Y_T) \propto \mathcal L (\theta; \mathcal Y_T) p(\theta) 
+      p(\theta,\Sigma|\mathcal Y_T) \propto \mathcal L (\theta,\Sigma; \mathcal Y_T) p(\theta,\Sigma)
     \]
 
     \bigskip
